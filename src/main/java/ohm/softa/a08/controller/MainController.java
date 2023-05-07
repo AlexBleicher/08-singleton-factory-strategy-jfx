@@ -2,6 +2,7 @@ package ohm.softa.a08.controller;
 
 import com.google.gson.Gson;
 import ohm.softa.a08.api.OpenMensaAPI;
+import ohm.softa.a08.filtering.MealsFilterFactory;
 import ohm.softa.a08.model.Meal;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
@@ -103,6 +104,7 @@ public class MainController implements Initializable {
 	 */
 	@FXML
 	public void doGetMeals() {
+		var filter = MealsFilterFactory.getStrategy(filterChoiceBox.getSelectionModel().getSelectedItem());
 		api.getMeals(openMensaDateFormat.format(new Date())).enqueue(new Callback<>() {
 			@Override
 			public void onResponse(Call<List<Meal>> call, Response<List<Meal>> response) {
@@ -119,15 +121,10 @@ public class MainController implements Initializable {
 
 						return;
 					}
-
-					meals.clear();
-
-					if ("Vegetarian".equals(filterChoiceBox.getValue()))
-						meals.addAll(response.body().stream()
-							.filter(Meal::isVegetarian)
-							.collect(Collectors.toList()));
-					else
-						meals.addAll(response.body());
+					Platform.runLater(() -> {
+						meals.clear();
+						meals.addAll(filter.filter(response.body()));
+					});
 				});
 			}
 
