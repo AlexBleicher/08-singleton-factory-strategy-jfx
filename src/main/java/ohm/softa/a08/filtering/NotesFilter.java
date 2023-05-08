@@ -17,10 +17,10 @@ public class NotesFilter extends FilterBase{
 		for (String note : m.getNotes()) {
 			for (String s : notes) {
 				if(note.contains(s)){
-					return true;
+					return false;
 				}
 			}
 		}
-		return false;
+		return true;
 	}
 }
