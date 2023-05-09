@@ -3,7 +3,6 @@ package ohm.softa.a08.services;
 import ohm.softa.a08.api.OpenMensaAPI;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
-
 public class OpenMensaAPIService {
 
 	private static final OpenMensaAPIService instance = new OpenMensaAPIService();

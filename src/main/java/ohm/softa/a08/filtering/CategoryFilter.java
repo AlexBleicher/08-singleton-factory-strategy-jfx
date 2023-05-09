@@ -9,13 +9,22 @@ public class CategoryFilter extends FilterBase{
 
 	private String[] categories;
 
-	public CategoryFilter(String... categories) {
+	private boolean exclude;
+
+	public CategoryFilter(boolean e, String... categories) {
 		this.categories = categories;
+		exclude = e;
 	}
 
 	@Override
 	protected boolean include(Meal m) {
-		return Arrays.stream(categories)
-			.anyMatch(s -> s.equals(m.getCategory().toLowerCase()));
+		if(!exclude) {
+			return Arrays.stream(categories)
+				.anyMatch(s -> s.equals(m.getCategory().toLowerCase()));
+		}
+		else{
+			return Arrays.stream(categories)
+				.noneMatch(s->s.equals(m.getCategory().toLowerCase()));
+		}
 	}
 }
